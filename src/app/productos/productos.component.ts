@@ -1,10 +1,10 @@
 import { Component, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableModule } from '@angular/material/table';
-import { DialogsComponent } from '../dialogs/dialogs.component';
+import { ManejaProductoComponent } from '../maneja-producto/maneja-producto.component';
 import { Product } from '../models/producto';
 import { MatButtonModule } from '@angular/material/button';
-import {MatIconModule} from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
 import { ProductosService } from '../services/productos.service';
 
 const ELEMENT_DATA: Product[] = [];
@@ -34,16 +34,14 @@ export class ProductosComponent {
 
   readonly dialog = inject(MatDialog);
 
-  constructor(productosService: ProductosService) {
+  constructor(private productosService: ProductosService) {
     // llamar a obtenerProductos y actualizar ELEMENT_DATA
-    productosService.getProducts().subscribe(data => {
-      this.dataSource = data
-    })
+    this.getProduct();
   }
 
 
   adicionarProducto(): void {
-    const dialogRef = this.dialog.open(DialogsComponent, {
+    const dialogRef = this.dialog.open(ManejaProductoComponent, {
       data: {
         data: {},
         mode: 'add',
@@ -53,23 +51,51 @@ export class ProductosComponent {
     dialogRef.afterClosed().subscribe(result => {
       if (result != null) {
         console.log('The dialog was closed  ', result);
-        // llamar a adicionarProducto (al backend)
-        // llamar a listar producto (al backend) y actualizar dataSource
+        this.productosService.addProduct(result).subscribe(data => {
+          console.log(data)
+          this.getProduct();
+        });
       }
     });
   }
 
   editarProducto(data: Product): void {
-    const dialogRef = this.dialog.open(DialogsComponent, {
+    const dialogRef = this.dialog.open(ManejaProductoComponent, {
       data: {
         data: data,
         mode: 'edit',
       },
     });
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed  ', result);
-      // llamar a editarProducto (al backend)
-      // llamar a listar producto (al backend) y actualizar dataSource
+      if (result != null) {
+        this.productosService.editProduct(result).subscribe(data => {
+          console.log(data)
+          this.getProduct();
+        });
+      }
     });
+  }
+
+  eliminarProducto(data: Product): void {
+    const dialogRef = this.dialog.open(ManejaProductoComponent, {
+      data: {
+        data: data,
+        mode: 'delete',
+      },
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result != null) {
+        this.productosService.deleteProduct(result).subscribe(data => {
+          console.log(data)
+          this.getProduct();
+        });
+      }
+    });
+  }
+
+  getProduct(): void {
+    this.productosService.getProducts().subscribe(data => {
+      this.dataSource = data
+    })
   }
 }

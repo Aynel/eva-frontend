@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { inject, model, } from '@angular/core';
+import { inject } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import {
@@ -16,7 +16,7 @@ import { Product } from '../models/producto';
 
 export interface DialogData {
   data: Product;
-  mode: 'edit' | 'add';
+  mode: 'edit' | 'add' | 'delete';
 }
 
 @Component({
@@ -30,11 +30,11 @@ export interface DialogData {
     MatDialogContent,
     MatDialogActions,
     MatDialogClose, ReactiveFormsModule],
-  templateUrl: './dialogs.component.html',
-  styleUrl: './dialogs.component.scss'
+  templateUrl: './maneja-producto.component.html',
+  styleUrl: './maneja-producto.component.scss'
 })
 
-export class DialogsComponent {
+export class ManejaProductoComponent {
   form: FormGroup = new FormGroup({
     id: new FormControl(''),
     product: new FormControl(''),
@@ -43,11 +43,11 @@ export class DialogsComponent {
     codigo: new FormControl(''),
   });
 
-  readonly dialogRef = inject(MatDialogRef<DialogsComponent>);
+  readonly dialogRef = inject(MatDialogRef<ManejaProductoComponent>);
   readonly data = inject<DialogData>(MAT_DIALOG_DATA);
 
   constructor() {
-    if (this.data?.mode === 'edit') {
+    if (this.data.mode !== 'add') {
       this.form.setValue(this.data.data);
     }
   }

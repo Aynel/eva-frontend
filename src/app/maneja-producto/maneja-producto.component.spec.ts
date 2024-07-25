@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DialogsComponent } from './dialogs.component';
+import { ManejaProductoComponent } from './maneja-producto.component';
 
-describe('DialogsComponent', () => {
-  let component: DialogsComponent;
-  let fixture: ComponentFixture<DialogsComponent>;
+describe('ManejaProductoComponent', () => {
+  let component: ManejaProductoComponent;
+  let fixture: ComponentFixture<ManejaProductoComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DialogsComponent]
+      imports: [ManejaProductoComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(DialogsComponent);
+    fixture = TestBed.createComponent(ManejaProductoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
