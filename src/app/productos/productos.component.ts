@@ -6,6 +6,7 @@ import { Product } from '../models/producto';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { ProductosService } from '../services/productos.service';
+import { Router } from '@angular/router';
 
 const ELEMENT_DATA: Product[] = [];
 // = [
@@ -34,7 +35,10 @@ export class ProductosComponent {
 
   readonly dialog = inject(MatDialog);
 
-  constructor(private productosService: ProductosService) {
+  constructor(
+    private productosService: ProductosService,
+    private router: Router,
+  ) {
     // llamar a obtenerProductos y actualizar ELEMENT_DATA
     this.getProduct();
   }
@@ -97,5 +101,10 @@ export class ProductosComponent {
     this.productosService.getProducts().subscribe(data => {
       this.dataSource = data
     })
+  }
+
+  salir(): void {
+    localStorage.removeItem('auth');
+    this.router.navigate(['/login'])
   }
 }

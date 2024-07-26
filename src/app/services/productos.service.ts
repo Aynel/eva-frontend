@@ -10,7 +10,7 @@ export class ProductosService {
 
   private products: Product[] = [];
 
-  BASE_URL: string = 'http://localhost:3000'
+  BASE_URL: string = window.location.origin + '/api'
 
 
   constructor(private http: HttpClient) { }

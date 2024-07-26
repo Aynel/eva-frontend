@@ -14,9 +14,9 @@
                 </mat-form-field>
             </p>
 
-            <!-- <p *ngIf="error" class="error"> -->
-                <!-- {{ error }} -->
-
+            @if(errorMsg) {
+            <p class="error">{{ errorMsg }}</p>
+            }
             <div class="button">
                 <button type="button" mat-button (click)="submit()">Login</button>
             </div>
